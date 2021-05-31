@@ -5,6 +5,7 @@ module.exports = function(app){
   // require('./passport')(app)
   // require('./aws')(app)
   // app.use(express.static(__dirname + '/../public'))
+  app.use(require('./database'))
   app.use('/', require('../route/router'))
   require('./swagger')(app)
   require('./error')(app)
