@@ -1,6 +1,6 @@
-# Express based project starter pack
+# MT PG Backend Service
 
-Starter pack for developing project with Nodejs express
+MT PG backend service written in NodeJS
 
 ## How To Run
 
