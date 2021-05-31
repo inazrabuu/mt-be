@@ -1,10 +1,10 @@
 const request = require('request-promise'),
       midtransHelper = require('../helper/midtrans'),
-      responseHelper = require('../helper/response')
+      responseHelper = require('../helper/response'),
+      transactionModel = require('../model/transaction')
 
 class Index{
   async index(req, res, next){
-    console.log(req.database)
     res.json({
       code: 200,
       body: {
@@ -55,11 +55,22 @@ class Index{
   async postPaymentHandler(req, res, next){
     let responseBody = responseHelper.get()
 
-    let { transaction_time, transaction_status, 
-          transaction_id, payment_type, order_id, 
-          gross_amount, card_type, bank } = req.body
+    let { transaction_id, transaction_time, transaction_status, 
+          payment_type, order_id, 
+          gross_amount } = req.body
 
-    responseHelper.set(responseBody, 200, 'success', { transaction_time, transaction_status, bank })
+    try{
+      await transactionModel.create([
+        transaction_id, transaction_time, transaction_status, 
+        order_id, payment_type, parseFloat(gross_amount), JSON.stringify(req.body)
+      ])
+  
+      responseHelper.set(responseBody, 200, 'success', { transaction_id })
+    } catch (e){
+      console.log(e)
+
+      responseHelper.set(responseBody, 500, 'error', e)
+    }
 
     res.status(responseBody.code).json(responseBody)
   }
