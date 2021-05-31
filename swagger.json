@@ -1,0 +1,35 @@
+{
+  "swagger":"2.0",
+  "info":{
+    "version":"1.0.0",
+    "title":"Indo Region",
+    "description":"A service to query all regions in Indonesia, based on data provided by The Indonesia Internal Affairs Ministry regulation with the mapping of respected JNE & Sicepat Code",
+    "license":{
+      "name":"MIT",
+      "url":"https://opensource.org/licenses/MIT"
+    }
+  },
+  "host":"localhost:4343",
+  "basePath":"/",
+  "tags":[
+    {
+      "name":"Region",
+      "description":"API for region in the system"
+    }
+  ],
+  "schemes":[
+    "http"
+  ],
+  "consumes":[
+    "application/json"
+  ],
+  "produces":[
+    "application/json"
+  ],
+  "paths":{
+    
+  },
+  "definitions":{
+    
+  }
+}
