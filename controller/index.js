@@ -68,6 +68,22 @@ class Index{
 
     res.status(responseBody.code).json(responseBody)
   }
+
+  async getUserToken(req, res, next){
+    let responseBody = responseHelper.get()
+
+    let userId = req.params.user_id || 1
+
+    try{
+      let response = await cardModel.getByUser(userId)
+
+      responseHelper.set(responseBody, 200, 'success', response)
+    } catch(e){
+      return next(new Error(e))
+    }
+
+    res.status(responseBody.code).json(responseBody)
+  }
 }
 
 module.exports = Index
