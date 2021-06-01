@@ -5,39 +5,13 @@ const request = require('request-promise'),
 
 class Index{
   async index(req, res, next){
-    res.json({
-      code: 200,
-      body: {
-        message: 'success',
-        data: []
-      }
-    })
+    res.json(responseHelper.get())
   }
 
   async getSnap(req, res, next){
-    let orderId = req.body.orderId || 1
     let responseBody = responseHelper.get()
 
-    let options = {
-      url: `${midtransHelper.getSnapTransactionURL()}`,
-      headers: midtransHelper.buildHeader(),
-      body: {
-        transaction_details: {
-          order_id: `FREEZY-${orderId}-${Math.floor(new Date().getTime() / 1000)}`,
-          gross_amount: 10000
-        },
-        credit_card: {
-          secure: true
-        },
-        customer_details: {
-          first_name: "mid",
-          last_name: "trans",
-          email: "midtrans@mailinator.com",
-          phone: "081234567890"
-        }
-      },
-      json: true
-    }
+    let options = midtransHelper.buildSnapOptions(req.body)
 
     try{
       let response = await request.post(options)
@@ -56,9 +30,14 @@ class Index{
     let responseBody = responseHelper.get()
 
     let { transaction_id, transaction_time, transaction_status, 
-          payment_type, order_id, 
+          fraud_status, payment_type, order_id, 
           gross_amount } = req.body
 
+    if (typeof(fraud_status) == 'undefined')
+      fraud_status = ''
+
+    transaction_status = midtransHelper.getTransactionStatusAlias(transaction_status, fraud_status)
+    
     try{
       await transactionModel.create([
         transaction_id, transaction_time, transaction_status, 
