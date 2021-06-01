@@ -23,8 +23,17 @@ class Db{
       +"`created_at` datetime DEFAULT CURRENT_TIMESTAMP,"
       +"PRIMARY KEY (`id`)"
       +") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"
+    
+    let sqlCard = "CREATE TABLE IF NOT EXISTS `card` ("
+      +"`id` int NOT NULL AUTO_INCREMENT,"
+      +"`user_id` int NOT NULL,"
+      +"`token` varchar(255) NOT NULL,"
+      +"`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+      +"PRIMARY KEY (`id`)"
+      +") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"
 
       await this.exec(sql, [])
+      await this.exec(sqlCard, [])
   }
 
 	exec(sql, param){
