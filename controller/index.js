@@ -56,10 +56,11 @@ class Index{
     let responseBody = responseHelper.get()
 
     let userId = req.body.user_id || 0,
-        token = req.body.token || 'thetoken'
+        token = req.body.token || 'thetoken',
+        masked = req.body.masked || 1234
 
     try{
-      await cardModel.create(userId, token)
+      await cardModel.create(userId, token, masked)
 
       responseHelper.set(responseBody, 200, 'success', { userId, token })
     } catch (e){
