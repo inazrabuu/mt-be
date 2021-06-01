@@ -18,9 +18,7 @@ class Index{
 
       responseHelper.set(responseBody, 200, 'success', response)
     } catch (e){
-      console.log(e)
-
-      responseHelper.set(responseBody, 500, 'error', e)
+      return next(new Error(e))
     }
 
     res.status(responseBody.code).json(responseBody)
@@ -46,9 +44,7 @@ class Index{
   
       responseHelper.set(responseBody, 200, 'success', { transaction_id })
     } catch (e){
-      console.log(e)
-
-      responseHelper.set(responseBody, 500, 'error', e)
+      return next(new Error(e))
     }
 
     res.status(responseBody.code).json(responseBody)
