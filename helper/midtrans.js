@@ -36,7 +36,6 @@ class MidtransHelper{
         itemDetails = []
 
     if (payload.items.length > 0){
-      console.log('here')
       payload.items.map(i => {
         itemDetails.push({
           id: i.id || 0,
