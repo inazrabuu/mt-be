@@ -5,6 +5,10 @@ class MidtransHelper{
     this.snapPath = process.env.MT_SNAP_PATH
     this.transactionPath = process.env.MT_SNAP_TRX_PATH
     this.baseSnapUrl = `${this.baseUrl}${this.snapPath}`
+    this.payments = ["credit_card", "cimb_clicks",
+    "bca_klikbca", "bca_klikpay", "bri_epay", "echannel", "permata_va",
+    "bca_va", "bni_va", "bri_va", "other_va", "gopay", "indomaret",
+    "danamon_online", "akulaku", "shopeepay", "cstore"]
   }
 
   getSnapTransactionURL(){
@@ -17,6 +21,91 @@ class MidtransHelper{
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Authorization': `Basic ${authKey}`
+    }
+  }
+  
+  buildSnapOptions(payload){
+    let orderId = payload.order_id || 1,
+        userId = payload.user_id || 'user_01',
+        firstName = payload.first_name || "first",
+        lastName = payload.last_name || "last",
+        email = payload.email || "email@memail.com",
+        phone = payload.phone || '',
+        amount = payload.amount || 10000,
+        paymentType = payload.payment_type || 'all',
+        itemDetails = []
+
+    if (payload.items.length > 0){
+      console.log('here')
+      payload.items.map(i => {
+        itemDetails.push({
+          id: i.id || 0,
+          price: i.price || 1,
+          quantity: i.qty || 1,
+          name: i.name || 'product name'
+        })
+      })
+    }
+    
+    return {
+      url: `${this.getSnapTransactionURL()}`,
+      headers: this.buildHeader(),
+      body: {
+        user_id: userId,
+        transaction_details: {
+          order_id: `FREEZY-${orderId}-${Math.floor(new Date().getTime() / 1000)}`,
+          gross_amount: amount
+        },
+        item_details: itemDetails,
+        enabled_payments: this.enabledPayments(paymentType),
+        credit_card: {
+          secure: true,
+          save_card: true
+        },
+        customer_details: {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          phone: phone
+        }
+      },
+      json: true
+    }
+  }
+
+  enabledPayments(paymentType){
+    let payments = []
+
+    switch (paymentType){
+      case 'all':
+        payments = this.payments
+      break
+      case 'credit_card':
+        payments.push(this.payments[0])
+      break
+      case 'non_credit_card':
+        this.payments.shift()
+        payments = this.payments
+      break
+    }
+
+    return payments
+  }
+
+  getTransactionStatusAlias(transactionStatus, fraudStatus){
+    if (transactionStatus == 'capture'){
+      if (fraudStatus == 'challenge'){
+        return 'challenge'
+      } else if (fraudStatus == 'accept'){
+        return 'success'
+      }
+    } else if (transactionStatus == 'settlement'){
+      return 'success'
+    } else if (transactionStatus == 'cancel' || transactionStatus == 'deny' 
+      || transactionStatus == 'expire'){
+      return 'failure'  
+    } else if (transactionStatus == 'pending'){
+      return 'pending'
     }
   }
 }
