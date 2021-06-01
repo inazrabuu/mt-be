@@ -1,7 +1,9 @@
+const { json } = require('body-parser')
 const request = require('request-promise'),
       midtransHelper = require('../helper/midtrans'),
       responseHelper = require('../helper/response'),
-      transactionModel = require('../model/transaction')
+      transactionModel = require('../model/transaction'),
+      cardModel = require('../model/card')
 
 class Index{
   async index(req, res, next){
@@ -43,6 +45,23 @@ class Index{
       ])
   
       responseHelper.set(responseBody, 200, 'success', { transaction_id })
+    } catch (e){
+      return next(new Error(e))
+    }
+
+    res.status(responseBody.code).json(responseBody)
+  }
+
+  async saveCard(req, res, next){
+    let responseBody = responseHelper.get()
+
+    let userId = req.body.user_id || 0,
+        token = req.body.token || 'thetoken'
+
+    try{
+      await cardModel.create(userId, token)
+
+      responseHelper.set(responseBody, 200, 'success', { userId, token })
     } catch (e){
       return next(new Error(e))
     }
