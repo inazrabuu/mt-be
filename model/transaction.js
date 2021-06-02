@@ -12,6 +12,25 @@ class Transaction extends BaseModel{
               VALUES (?, ?, ?, ?, ?, ?, ?)`
     await this.db.exec(sql, params)
   }
+
+  async update(params, field, value){
+    let fieldValues = '',
+        fieldvalues = [],
+        param = []
+
+    params.map(m => {
+      for (let k in m){
+        fieldvalues.push(`${k} = ?`)
+        param.push(m[k])
+      }
+    })
+
+    fieldValues = fieldvalues.join(', ')
+    param.push(value)
+
+    let sql = `UPDATE ${this.table} SET ${fieldValues} WHERE ${field} = ?`
+    await this.db.exec(sql, param)
+  }
 }
 
 module.exports = new Transaction()
