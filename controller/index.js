@@ -18,6 +18,11 @@ class Index{
     try{
       let response = await request.post(options)
 
+      let userId = options.body.user_id,
+          orderId = options.body.transaction_details.order_id,
+          amount = options.body.transaction_details.gross_amount
+      await transactionModel.create([userId, '', '', '', orderId, '', amount, '{}'])
+
       responseHelper.set(responseBody, 200, 'success', response)
     } catch (e){
       return next(new Error(e))
@@ -39,10 +44,25 @@ class Index{
     transaction_status = midtransHelper.getTransactionStatusAlias(transaction_status, fraud_status)
     
     try{
-      await transactionModel.create([
-        transaction_id, transaction_time, transaction_status, 
-        order_id, payment_type, parseFloat(gross_amount), JSON.stringify(req.body)
-      ])
+      let fieldValues = [
+        {
+          transaction_id: transaction_id
+        },
+        {
+          transaction_time: transaction_time
+        },
+        {
+          transaction_status: transaction_status
+        },
+        {
+          payment_type: payment_type
+        },
+        {
+          payload: JSON.stringify(req.body)
+        }
+      ]
+
+      await transactionModel.update(fieldValues, 'order_id', order_id)
   
       responseHelper.set(responseBody, 200, 'success', { transaction_id })
     } catch (e){
@@ -82,6 +102,17 @@ class Index{
     } catch(e){
       return next(new Error(e))
     }
+
+    res.status(responseBody.code).json(responseBody)
+  }
+
+  async test(req, res, next){
+    let responseBody = responseHelper.get()
+
+    await transactionModel.update([{
+      'transaction_id': 1234,
+      'transaction_status': 'success'
+    }], 'order_id', 1)
 
     res.status(responseBody.code).json(responseBody)
   }
