@@ -8,8 +8,8 @@ class Transaction extends BaseModel{
 
   async create(params){
     let sql = `INSERT INTO ${this.table} 
-              (transaction_id, transaction_time, transaction_status, order_id, payment_type, gross_amount, payload) 
-              VALUES (?, ?, ?, ?, ?, ?, ?)`
+              (user_id, transaction_id, transaction_time, transaction_status, order_id, payment_type, gross_amount, payload) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     await this.db.exec(sql, params)
   }
 
