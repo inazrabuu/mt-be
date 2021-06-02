@@ -13,6 +13,7 @@ class Db{
   async init(){
     let sql = "CREATE TABLE IF NOT EXISTS `transaction` ("
       +"`id` int NOT NULL AUTO_INCREMENT,"
+      +"`user_id` int NOT NULL,"
       +"`transaction_id` varchar(255) DEFAULT '',"
       +"`transaction_time` varchar(255) DEFAULT '',"
       +"`transaction_status` varchar(255) DEFAULT '',"
