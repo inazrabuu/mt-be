@@ -105,17 +105,6 @@ class Index{
 
     res.status(responseBody.code).json(responseBody)
   }
-
-  async test(req, res, next){
-    let responseBody = responseHelper.get()
-
-    await transactionModel.update([{
-      'transaction_id': 1234,
-      'transaction_status': 'success'
-    }], 'order_id', 1)
-
-    res.status(responseBody.code).json(responseBody)
-  }
 }
 
 module.exports = Index
