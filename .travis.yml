@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+after_success:
+  - docker build -t inazrabuu/mt-be ./backend
+  - docker build -t inazrabuu/mt-be-nginx ./nginx
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --passwd-stdin
+  - docker push inazrabuu/mt-be
+  - docker push inazrabuu/mt-be-nginx
+
+deploy:
+  provider: elasticbeanstalk
+  region: ap-southeast-1
+  app: mt-be
+  env: Mtbe-env-1
+  bucket_name: elasticbeanstalk-ap-southeast-1-321687007218
+  bucket_path: mt-be
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
