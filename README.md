@@ -9,6 +9,7 @@ MT PG backend service written in NodeJS
 ### Backend: Manual
 - change directory to backend
 - Ask the environment file from the maintainer, put it in the backend's root folder
+- load the environment file in `index.js`
 - `npm install`
 - `npm start`
 
