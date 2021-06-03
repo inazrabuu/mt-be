@@ -6,8 +6,13 @@ MT PG backend service written in NodeJS
 
 - Clone the repo
 
-### Backend
+### Backend: Manual
 - change directory to backend
 - Ask the environment file from the maintainer, put it in the backend's root folder
 - `npm install`
 - `npm start`
+
+### Development Purpose
+```shell
+docker-compose up --build
+```
