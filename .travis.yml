@@ -14,7 +14,7 @@ deploy:
   provider: elasticbeanstalk
   region: ap-southeast-1
   app: mt-be
-  env: Mtbe-env-1
+  env: Mtbe-env
   bucket_name: elasticbeanstalk-ap-southeast-1-321687007218
   bucket_path: mt-be
   on:
