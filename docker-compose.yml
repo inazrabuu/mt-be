@@ -23,7 +23,7 @@ services:
       - MT_BASE_URL=https://app.sandbox.midtrans.com/
       - MT_SNAP_PATH=snap/v1/
       - MT_SNAP_TRX_PATH=transactions
-      - MT_SECRET_KEY=SB-Mid-server-2jJYdY6YGPwS03Zu32IZK5vh
+      - MT_SECRET_KEY=
       - DB_HOST=mysql
       - DB_USER=midtrans
       - DB_PASS=password
