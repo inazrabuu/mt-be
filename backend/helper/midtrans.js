@@ -11,6 +11,16 @@ class MidtransHelper{
     "danamon_online", "akulaku", "shopeepay", "cstore"]
   }
 
+  getConfig(){
+    return {
+      secretKey: this.secretKey,
+      baseUrl: this.baseUrl,
+      snapPath: this.snapPath,
+      transactionPath: this.transactionPath,
+      baseSnapUrl: this.baseSnapUrl
+    }
+  }
+
   getSnapTransactionURL(){
     return `${this.baseSnapUrl}${this.transactionPath}`
   }

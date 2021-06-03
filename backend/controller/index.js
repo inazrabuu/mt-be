@@ -105,6 +105,14 @@ class Index{
 
     res.status(responseBody.code).json(responseBody)
   }
+
+  async getMidtransConfig(req, res, next){
+    let responseBody = responseHelper.get()
+
+    responseHelper.set(responseBody, 200, 'success', midtransHelper.getConfig())
+
+    res.status(responseBody.code).json(responseBody)
+  }
 }
 
 module.exports = Index
