@@ -2,19 +2,19 @@
   "swagger":"2.0",
   "info":{
     "version":"1.0.0",
-    "title":"Indo Region",
-    "description":"A service to query all regions in Indonesia, based on data provided by The Indonesia Internal Affairs Ministry regulation with the mapping of respected JNE & Sicepat Code",
+    "title":"Midtrans Backend",
+    "description":"Midtrans Backend to be used in an app",
     "license":{
       "name":"MIT",
       "url":"https://opensource.org/licenses/MIT"
     }
   },
-  "host":"localhost:4343",
+  "host":"localhost:3333",
   "basePath":"/",
   "tags":[
     {
-      "name":"Region",
-      "description":"API for region in the system"
+      "name": "Snap",
+      "description": "Midtrans SNAP product for easier payment integration"
     }
   ],
   "schemes":[
@@ -27,9 +27,110 @@
     "application/json"
   ],
   "paths":{
-    
+    "/get_snap": {
+      "post": {
+        "tags": ["Snap"],
+        "summary": "get token for snap",
+        "parameters":[
+          {
+            "name": "order",
+            "in": "body",
+            "description": "The order to pay with snap",
+            "required": "true",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseSnap"
+            }
+          }
+        }
+      }
+    }
   },
   "definitions":{
-    
+    "Item": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "qty": {
+          "type": "integer"
+        }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer"
+        },
+        "payment_type": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Item"
+          }
+        }
+      }
+    },
+    "ResponseSnap": {
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                },
+                "redirect_url": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
