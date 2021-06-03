@@ -1,6 +1,6 @@
 {
   "AWSEBDockerrunVersion": 2,
-  "containerDefinition": [
+  "containerDefinitions": [
     {
       "name": "api",
       "image": "inazrabuu/mt-be",
