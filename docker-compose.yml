@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=midtrans
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=midtrans
+  api:
+    depends_on:
+      - mysql
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./backend
+    volumes:
+      - /app/node_modules
+      - ./backend:/app
+    restart: always
+    environment:
+      - APP_NAME=midtrans
+      - APP_PORT=3333
+      - MT_BASE_URL=https://app.sandbox.midtrans.com/
+      - MT_SNAP_PATH=snap/v1/
+      - MT_SNAP_TRX_PATH=transactions
+      - MT_SECRET_KEY=SB-Mid-server-2jJYdY6YGPwS03Zu32IZK5vh
+      - DB_HOST=mysql
+      - DB_USER=midtrans
+      - DB_PASS=password
+      - DB_NAME=midtrans
+  nginx:
+    depends_on:
+      - mysql
+      - api
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '1234:80'
