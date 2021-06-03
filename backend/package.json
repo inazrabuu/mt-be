@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "nodemon index.js",
+    "dev": "nodemon",
     "start": "node index.js",
     "pm2": "pm2 start index.js --watch"
   },
