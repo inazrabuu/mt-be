@@ -1,4 +1,4 @@
-global.config = require('dotenv').config()
+// global.config = require('dotenv').config()
 global.express = require('express')
 global.app = express();
 
