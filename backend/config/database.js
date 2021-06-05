@@ -2,7 +2,7 @@ const mysql = require('mysql2')
 
 class Db{
 	constructor(){
-		this.conn = mysql.createConnection({
+		this.conn = mysql.createPool({
 			host: process.env.DB_HOST,
 			user: process.env.DB_USER,
 			password: process.env.DB_PASS,
@@ -42,7 +42,7 @@ class Db{
 		return new Promise((resolve, reject) => {
 			this.conn.query(sql, param, (err, results, fields) => {
 				if (err){
-					this.conn.destroy()
+					this.conn.end()
 					reject(err)
 				}
 
