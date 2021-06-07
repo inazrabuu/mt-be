@@ -14,6 +14,7 @@ class Index{
     let responseBody = responseHelper.get()
 
     let options = midtransHelper.buildSnapOptions(req.body)
+    console.log(JSON.stringify(options))
 
     try{
       let response = await request.post(options)
