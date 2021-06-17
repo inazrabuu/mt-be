@@ -62,7 +62,7 @@ class MidtransHelper{
       body: {
         user_id: userId,
         transaction_details: {
-          order_id: `FREEZY-${orderId}-${Math.floor(new Date().getTime() / 1000)}`,
+          order_id: `${orderId}`,
           gross_amount: amount
         },
         item_details: itemDetails,

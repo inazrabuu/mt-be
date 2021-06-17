@@ -3,7 +3,9 @@ const request = require('request-promise'),
       midtransHelper = require('../helper/midtrans'),
       responseHelper = require('../helper/response'),
       transactionModel = require('../model/transaction'),
-      cardModel = require('../model/card')
+      cardModel = require('../model/card'),
+      cryptoHelper = require('../helper/crypto'),
+      freezyHelper = require('../helper/freezy')
 
 class Index{
   async index(req, res, next){
@@ -14,7 +16,6 @@ class Index{
     let responseBody = responseHelper.get()
 
     let options = midtransHelper.buildSnapOptions(req.body)
-    console.log(JSON.stringify(options))
 
     try{
       let response = await request.post(options)
@@ -43,6 +44,17 @@ class Index{
       fraud_status = ''
 
     transaction_status = midtransHelper.getTransactionStatusAlias(transaction_status, fraud_status)
+
+    // Build freezy callback essentials
+    let { timestamp, signatureString } = freezyHelper.getSignaturePayload()
+    let signature = cryptoHelper.signContent(signatureString, freezyHelper.clientSecret)
+    let payload = {
+      order_code: order_id,
+      bank: payment_type,
+      status: freezyHelper.translateStatus(transaction_status)
+    }
+
+    console.log(payload)
     
     try{
       let fieldValues = [
@@ -64,8 +76,14 @@ class Index{
       ]
 
       await transactionModel.update(fieldValues, 'order_id', order_id)
+      let response = await request.post(freezyHelper.buildCallbackOptions(timestamp, signature, payload))
   
-      responseHelper.set(responseBody, 200, 'success', { transaction_id })
+      responseHelper.set(responseBody, 200, 'success', 
+        { 
+          transaction_id: transaction_id,
+          freezy_response: response
+        }
+      )
     } catch (e){
       return next(new Error(e))
     }
@@ -112,6 +130,27 @@ class Index{
 
     responseHelper.set(responseBody, 200, 'success', midtransHelper.getConfig())
 
+    res.status(responseBody.code).json(responseBody)
+  }
+
+  async testFreezyCallback(req, res, next){
+    let responseBody = responseHelper.get()
+
+    let { timestamp, signatureString } = freezyHelper.getSignaturePayload()
+    let signature = cryptoHelper.signContent(signatureString, freezyHelper.clientSecret)
+    let payload = {
+      order_code: 'FRZ202106151745053',
+      bank: 'BCA',
+      status: 'SUCCEED'
+    }
+    
+    try{
+      let response = await request.post(freezyHelper.buildCallbackOptions(timestamp, signature, payload))
+      responseBody.body = response
+    } catch (e){
+      return next(new Error(e))
+    }
+    
     res.status(responseBody.code).json(responseBody)
   }
 }

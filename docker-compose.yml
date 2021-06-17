@@ -23,11 +23,18 @@ services:
       - MT_BASE_URL=https://app.sandbox.midtrans.com/
       - MT_SNAP_PATH=snap/v1/
       - MT_SNAP_TRX_PATH=transactions
-      - MT_SECRET_KEY=
+      - MT_SECRET_KEY=SB-Mid-server-2jJYdY6YGPwS03Zu32IZK5vh
       - DB_HOST=mysql
       - DB_USER=midtrans
       - DB_PASS=password
       - DB_NAME=midtrans
+      - CHOKIDAR_USEPOLLING=true
+      - FREEZY_API_URL=https://api.freezyfresh.abcwork.id/v1
+      - FREEZY_API_PATH_CALLBACK=/callback/cc/order
+      - FREEZY_API_CLIENT_ID=payment
+      - FREEZY_API_CLIENT_KEY=50650482533294147881
+      - FREEZY_API_CLIENT_SECRET=F7cnEVIsuG
+      - FREEZY_API_CLIENT_AUTH=dd7bd34a6836e041ac94e11a520bbec1d537d962b230b6db290111fbff40d9f3
   nginx:
     depends_on:
       - mysql
