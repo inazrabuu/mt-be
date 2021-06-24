@@ -18,6 +18,7 @@ class Index{
     let options = midtransHelper.buildSnapOptions(req.body)
 
     try{
+      console.log(JSON.stringify(options))
       let response = await request.post(options)
 
       let userId = options.body.user_id,
