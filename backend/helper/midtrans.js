@@ -42,7 +42,7 @@ class MidtransHelper{
         email = payload.email || "email@memail.com",
         phone = payload.phone || '',
         amount = payload.amount || 10000,
-        paymentType = payload.payment_type || 'all',
+        paymentType = payload.payment_type.toLowerCase() || 'all',
         itemDetails = []
 
     if (payload.items.length > 0){
