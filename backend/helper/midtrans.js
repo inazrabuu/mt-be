@@ -93,8 +93,7 @@ class MidtransHelper{
         payments.push(this.payments[0])
       break
       case 'non_credit_card':
-        this.payments.shift()
-        payments = this.payments
+        payments = this.payments.slice(1)
       break
     }
 
