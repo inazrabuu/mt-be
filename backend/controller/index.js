@@ -44,7 +44,7 @@ class Index{
     if (typeof(fraud_status) == 'undefined')
       fraud_status = ''
 
-    transaction_status = midtransHelper.getTransactionStatusAlias(transaction_status, fraud_status)
+    // transaction_status = midtransHelper.getTransactionStatusAlias(transaction_status, fraud_status)
 
     // Build freezy callback essentials
     let { timestamp, signatureString } = freezyHelper.getSignaturePayload()
@@ -52,6 +52,7 @@ class Index{
     let payload = {
       order_code: order_id,
       bank: payment_type,
+      // status: freezyHelper.translateStatus(transaction_status)
       status: freezyHelper.translateStatus(transaction_status)
     }
 
