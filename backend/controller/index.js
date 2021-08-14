@@ -53,7 +53,7 @@ class Index{
       order_code: order_id,
       bank: payment_type,
       // status: freezyHelper.translateStatus(transaction_status)
-      status: freezyHelper.translateStatus(transaction_status)
+      status: transaction_status
     }
 
     console.log(payload)
