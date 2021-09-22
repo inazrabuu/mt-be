@@ -48,10 +48,10 @@ class MidtransHelper{
     if (payload.items.length > 0){
       payload.items.map(i => {
         itemDetails.push({
-          id: i.id || 0,
-          price: i.price || 1,
-          quantity: i.qty || 1,
-          name: i.name || 'product name'
+          id: i.id,
+          price: i.price,
+          quantity: i.qty,
+          name: i.name
         })
       })
     }
